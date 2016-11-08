@@ -1,7 +1,6 @@
 import os
 from social.backends.oauth import BaseOAuth2
 
-
 class drchronoOAuth2(BaseOAuth2):
     """
     drchrono OAuth authentication backend

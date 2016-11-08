@@ -38,7 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'drchrono',
-    'social.apps.django_app.default',
+    'social_django',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,10 +84,18 @@ WSGI_APPLICATION = 'drchrono.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+# I've included a docker-compose.yml file with a MySQL DB and a python app server for you to use if you'd like. If you
+# don't like docker, that's fine (seriously). For this interview, use whatever development environment tools you feel
+# most comfortable with. We really don't care; we're interested in your code, not your toolchain.
+# TODO: If you don't use docker, change the DB config to make it work with your own tools.
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'drchrono',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'db',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
     }
 }
 
@@ -107,5 +116,42 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
 STATIC_URL = '/static/'
+
+
+# TODO: Configure your drchrono.com account's API settings to allow this app access
+# 1) go to https://app.drchrono.com/api-management/
+# 2) Add a new application
+# 3) configure your redirect URL to be http://localhost:8080/complete/drchrono/
+# 3.1) This needs to be an exact match to what the social-auth module expects
+# 3.2) change your hostname if you're using a different way to access this kiosk; by default it'll run on localhost:8080
+# 4) copy your CLIENT_ID and SECRET keys into a file docker/environment. See the example
+# 5) Ask a dev if this doesn't work quickly; these settings can be fiddly, and we'd rather not wast time with them.
+SOCIAL_AUTH_DRCHRONO_KEY = os.getenv('SOCIAL_AUTH_CLIENT_ID')
+SOCIAL_AUTH_DRCHRONO_SECRET = os.getenv('SOCIAL_AUTH_SECRET')
+
+
+LOGIN_REDIRECT_URL = '/today/'
+LOGIN_URL = 'login/drchrono'
+
+SHELL_PLUS = "ipython"
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'drchrono.endpoints.*': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
