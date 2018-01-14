@@ -7,3 +7,4 @@ python-social-auth==0.2.12
 requests==2.11.1
 requests-oauth2==0.2.0
 requests-oauthlib==0.5.0
+django-localflavor==1.6
