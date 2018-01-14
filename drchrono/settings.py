@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'drchrono',
     'social.apps.django_app.default',
+    'localflavor'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -115,5 +116,8 @@ LOGIN_URL = 'https://localhost:8000/login'
 LOGOUT_URL = 'https://localhost:8000/logout'
 SOCIAL_AUTH_DRCHRONO_KEY = 'XEqxHLjWYzhrmGEYPIqeAyePaGy8iFOCt3BaBzyT'
 SOCIAL_AUTH_DRCHRONO_SECRET = 'v6BAckRflV5vC3CFUHsT6rjOzC8ndsp5CDOsEFbGOdye0MjkPuETmb04iWLDE5WUOXM1bUsJLEf8goU2SkvBgg4JkDriZniOqQtDHVHRRyOaj0epNbJX3FfCTw1SBkDZ'
-SOCIAL_AUTH_DRCHRONO_SCOPE = ['patients:summary:read'] # For birthday scopes
+SOCIAL_AUTH_DRCHRONO_SCOPE = ['patients:summary:read patients:summary:write calendar:read calendar:write clinical:read clinical:write'] # For birthday scopes
 LOGIN_REDIRECT_URL = 'http://localhost:8000/'
+
+# Global Constants
+MAX_NAME_LENGTH = 30
