@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Welcome to Chrono Kiosk!{% endblock %}
+{% block extra_header %}<meta http-equiv="refresh" content="5" >{% endblock %}
+{% block body %}
+    <h1>Today's Appointments:</h1>
+    <table class="table">
+    <tr>
+        <th>Scheduled Time</th>
+        <th>Duration</th>
+        <th>Status</th>
+        <th>Time Waiting</th>
+        <th>Patient</th>
+        <th>DOB</th>
+        <th>Action</th>
+    </tr>
+    {% for appointment in object_list %}
+        <tr><td>{{ appointment.scheduled_time }}</td>
+            <td>{{ appointment.duration }} minutes</td>
+            <td>{{ appointment.status }}</td>
+            <td>
+                {% if appointment.checkin_time %}
+                    {{ appointment.checkin_time|timesince:current_time }}
+                {% else %}
+                    {# Nothing #}
+                {% endif %}
+            </td>
+            <td>{{ appointment.patient }}</td>
+            <td>{{ appointment.patient.date_of_birth }}</td>
+        </tr>
+    {% empty %}
+        <li>No appointments today.</li>
+    {% endfor %}
+    </table>
+    <p>Average Wait time: {{ wait_time }} minutes</p>
+    <a class="btn btn-default" href="{% url 'sync' %}">Update From Web</a>
+{% endblock %}

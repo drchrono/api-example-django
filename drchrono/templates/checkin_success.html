@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Appointment Confirmed{% endblock %}
+{% block body %}
+    <h1>Thanks for checking in!</h1>
+        <script>
+        var timer = setTimeout(function() {
+            window.location='{% url 'check-in' %}'
+        }, 3000);
+    </script>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Welcome to Chrono Kiosk!{% endblock %}
+{% block extra_header %}{% endblock %}
+{% block body %}
+    <p>Starting consult.</p>
+    <script>
+        var timer = setTimeout(function() {
+            window.location='{% url 'today' %}'
+        }, 3000);
+    </script>
+{% endblock %}

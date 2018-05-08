@@ -1,0 +1,4 @@
+# Get your tokens from the drchrono.com website under Account->API
+
+SOCIAL_AUTH_CLIENT_ID=XXXXXXXXXXXXXXX
+SOCIAL_AUTH_SECRET=YYYYYYYYYYYYYYYYYYYYY
