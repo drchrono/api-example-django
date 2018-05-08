@@ -19,7 +19,7 @@ services:
     ports:
       - "8080:8080"
 #    command: /bin/bash -c "while true; do echo mark; sleep 2; done"
-    command: "python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8080"
+    command: /bin/bash -c "python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8080"
     volumes:
       - ".:/usr/src/app"
     working_dir: /usr/src/app
