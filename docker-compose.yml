@@ -1,21 +1,11 @@
 version: '2'
 services:
-  db:
-    container_name: db
-    image: mysql:5.7
-    environment:
-      - "MYSQL_ALLOW_EMPTY_PASSWORD=True"
-    ports:
-      - "3306:3306"
-    volumes:
-      - "./docker/data:/docker-entrypoint-initdb.d"   # Put data here to be loaded on container creation
-    working_dir: "/docker-entrypoint-initdb.d"
-
   drchrono:
     container_name: drchrono
     image: drchrono
     env_file:
-      - "docker/environment"    # Any environmental variables you want can go in this plain text file. See the docs.
+      # Any environmental variables you want can go in this plain text file. See the docs.
+      - "docker/environment"
     ports:
       - "8080:8080"
 #    command: /bin/bash -c "while true; do echo mark; sleep 2; done"
@@ -23,8 +13,6 @@ services:
     volumes:
       - ".:/usr/src/app"
     working_dir: /usr/src/app
-    depends_on:
-      - "db"
     build:
       context: .
       dockerfile: ./docker/drchrono-dockerfile

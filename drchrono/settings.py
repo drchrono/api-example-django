@@ -83,19 +83,10 @@ WSGI_APPLICATION = 'drchrono.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-# I've included a docker-compose.yml file with a MySQL DB and a python app server for you to use if you'd like. If you
-# don't like docker, that's fine (seriously). For this interview, use whatever development environment tools you feel
-# most comfortable with. We really don't care; we're interested in your code, not your toolchain.
-# TODO: If you don't use docker, change the DB config to make it work with your own tools.
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'drchrono',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'db',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'drchrono.sqlite3',
     }
 }
 
