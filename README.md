@@ -62,7 +62,7 @@ $ docker-compose up
 ```
 
 If you don't want to use docker, that's fine too! The project is fairly small and self-contained. You can probably get all
-the dependencies installed and running on your favorite platform with `pip install -r requirements.txt && python manage.py runserver`.
+the dependencies installed and running on your favorite platform with `pip install -r requirements.txt && python manage.py runserver`. You'll have to configure the `CLIENT_ID` and `CLIENT_SECRET` variables by hand, though.
 
 Once the dev server is running, connect with a browser to [http://localhost:8080/setup]() and use the web to authorize 
 the application.
