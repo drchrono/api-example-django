@@ -90,7 +90,7 @@ ENV/
 # Rope project settings
 .ropeproject
 
-db.sqlite3
+*.sqlite3
 
 # secret environment stuff
 docker/environment

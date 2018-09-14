@@ -1,5 +1,4 @@
 import requests
-from social.apps.django_app.default.models import UserSocialAuth
 import logging
 
 
@@ -42,12 +41,11 @@ class BaseEndpoint(object):
     BASE_URL = 'https://drchrono.com/api/'
     endpoint = ''
 
-    def __init__(self):
+    def __init__(self, access_token=None):
         """
         Creates an API client which will act on behalf of a specific user
         """
-        self.oauth_provider = UserSocialAuth.objects.get(provider='drchrono')
-        self.access_token = self.oauth_provider.extra_data['access_token']
+        self.access_token = access_token
 
     @property
     def logger(self):

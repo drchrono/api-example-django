@@ -1,120 +1,49 @@
-from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse
-from django.shortcuts import redirect, render_to_response
-from django.utils.timezone import now
-from django.views import generic
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
-from django.views.generic.list import ListView
-from django.db import models
+from social_django.models import UserSocialAuth
 
-from drchrono.endpoints import PatientEndpoint, AppointmentEndpoint
-from drchrono.forms import PatientWhoamiForm, AppointmentChoiceForm, PatientInfoForm
-from drchrono.models import Appointment, Patient
-from drchrono.serializers import AppointmentSerializer
-from drchrono.sync import sync_all
-
-# These views are very basic; they use almost no JS, have very little interactivity, and probably aren't well designed.
-# TODO: you have free reign in this module to discard anything and make it better.
+from drchrono.endpoints import DoctorEndpoint
 
 
-#####
-# Patient checkin flow
-class PatientCheckin(generic.FormView):
+class SetupView(TemplateView):
     """
-    The first view a patient sees when they come to the kiosk
+    The beginning of the OAuth sign-in flow. Logs a user into the kiosk, and saves the token.
     """
-    form_class = PatientWhoamiForm
-    template_name = 'form_patient_identify.html'
-
-    def form_valid(self, form):
-        try:
-            patient = form.get_patient()
-            return redirect('confirm_appointment', patient=patient.id)
-        except Patient.DoesNotExist:
-            return redirect('checkin_receptionist')
+    template_name = 'kiosk_setup.html'
 
 
-class PatientConfirmAppointment(generic.FormView):
-    """
-    The patient can select their appointment from a list.
-    """
-    form_class = AppointmentChoiceForm
-    template_name = 'form_appointment_select.html'
-
-    def get_form_kwargs(self):
-        # TODO: fix this security hole:
-        # By tampering with the GET parameter, a bad actor can retrieve a list  of all appointments for any patient.
-        old_kwargs = super(PatientConfirmAppointment, self).get_form_kwargs()
-        patient_id = self.kwargs['patient']
-        old_kwargs.update({
-            'patient': patient_id,
-        })
-        return old_kwargs
-
-    def form_valid(self, form):
-        # Hit the Appointments API and confirm check-in
-        appointment = form.cleaned_data['appointment']
-        endpoint = AppointmentEndpoint()
-        endpoint.update(appointment.id, {'status': 'Arrived'})
-        # Re-sync the appointment info to update the status, and pick up any other updates since last time
-        api_data = endpoint.fetch(id=appointment.id)
-        serializer = AppointmentSerializer(data=api_data)
-        if serializer.is_valid():
-            serializer.save()  # Save updates from API
-            # Redirect for the next visitor to check in
-            return redirect('checkin_success', patient=form.patient)
-        else:
-            # TODO: set up logging framework properly
-            # logger.error("Error saving appointment {}".format(appointment.id))
-            return redirect('checkin_receptionist')
-
-
-class PatientConfirmInfo(generic.FormView):
-    """
-    The patient can edit their demographic data. The kiosk will use the API to update demographic info about the patient
-    """
-    # TODO: finish this. It does not work at all.
-    template_name = 'form_patient_info.html'
-    form_class = PatientInfoForm
-
-
-class CheckinSuccess(generic.TemplateView):
-    """
-    Display a 'success' message when a patient has checked in.
-    """
-    template_name = 'checkin_success.html'
-
-
-class CheckinFailed(TemplateView):
-    """
-    Display a 'failure' message and a call-to-action for the patient to see the IRL receptionist.
-    """
-    template_name = 'checkin_receptionist.html'
-
-
-######
-# Doctor dashboard
-class DoctorToday(ListView):
+class DoctorWelcome(TemplateView):
     """
     The doctor can see what appointments they have today.
     """
-    # TODO: this needs some work for the doctor to use it as a control panel for their daily schedule.
-    template_name = 'doctor_today.html'
-    queryset = Appointment.objects.all()
+    template_name = 'doctor_welcome.html'
+
+    def get_token(self):
+        """
+        Social Auth module is configured to store our access tokens. This dark magic will fetch it for us if we've
+        already signed in.
+        """
+        oauth_provider = UserSocialAuth.objects.get(provider='drchrono')
+        access_token = oauth_provider.extra_data['access_token']
+        return access_token
+
+    def make_api_request(self):
+        """
+        Use the token we have stored in the DB to make an API request and get doctor details. If this succeeds, we've
+        proved that the OAuth setup is working
+        """
+        # We can create an instance of an endpoint resource class, and use it to fetch details
+        access_token = self.get_token()
+        api = DoctorEndpoint(access_token)
+        # Grab the first doctor from the list; normally this would be the whole practice group, but your hackathon
+        # account probably only has one doctor in it.
+        return next(api.list())
 
     def get_context_data(self, **kwargs):
-        kwargs = super(DoctorToday, self).get_context_data(**kwargs)
-        kwargs['current_time'] = now()
-        wait_time = Appointment.objects.filter(
-            time_waiting__isnull=False
-        ).aggregate(models.Avg('time_waiting'))['time_waiting__avg']
-        kwargs['wait_time'] = wait_time
+        kwargs = super(DoctorWelcome, self).get_context_data(**kwargs)
+        # Hit the API using one of the endpoints just to prove that we can
+        # If this works, then your oAuth setup is working correctly.
+        doctor_details = self.make_api_request()
+        kwargs['doctor'] = doctor_details
         return kwargs
 
-
-###############
-# Utility views
-def sync_info(request):
-    """Sync everything, then redirect back to the today screen"""
-    sync_all()
-    return redirect('today')
