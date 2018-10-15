@@ -1,6 +1,6 @@
 # drchrono Hackathon
 
-### Check-in kiosk
+### Doctor Dashboard
 
 Imagine you’re a busy doctor running a lean medical practice. Your receptionist doesn’t have time to print out your daily schedule, 
 or bother you with constant updates as patients check in, schedule new appointments, or cancel. 
@@ -27,6 +27,21 @@ out new functionality. It doesn't quite work; it's your job to make it work, and
 
 Use the drchrono API docs and feel free to reach out to the people operations team with any questions and we'll get back
 to you ASAP.
+
+
+### Check-in kiosk
+
+Before reading this please read the prompt for Doctor Dashboard, as we will be building on top of that.
+
+Here we add a sign-in kiosk, similar to the ones you see for flight check-ins.
+There should be an account association flow where a doctor can authenticate using
+their drchrono account and set up the kiosk for their office.
+After the doctor is logged in, a page should be displayed that lets patients check
+in. A patient with an appointment should first confirm their identity (first/last
+name maybe SSN) then be able to update their demographic information using the
+patient chart API endpoint.  Once the they have filled out that information the
+app can set the appointment status to "Arrived" (Appointment API Docs).
+
 
 ### Requirements
 - a free [drchrono.com](https://www.drchrono.com/sign-up/) account
