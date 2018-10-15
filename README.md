@@ -2,23 +2,19 @@
 
 ### Check-in kiosk
 
-Picture going to the doctor's office and replacing the receptionist and paper forms
-with a kiosk similar to checking in for a flight.
+Imagine you’re a busy doctor running a lean medical practice. Your receptionist doesn’t have time to print out your daily schedule, 
+or bother you with constant updates as patients check in, schedule new appointments, or cancel. 
+You want to replace old office workflows with an interactive dashboard.
 
-There should be an account association flow where a doctor can authenticate using
-their drchrono account and set up the kiosk for their office.
+After you log into to the system, the doctor should see an interactive page page they can leave open that displays today’s appointments, 
+indicating which patients are scheduled, which patients have checked in, and how long they have been waiting. From this screen, the doctor 
+can indicate they are seeing a patient, which stops the “time spent waiting” clock. It should be able to update when an appointment status 
+changes or a new appointment is scheduled by the receptionist or patient. It should also display some summary statistics, 
+like the overall average wait time for all patients they have ever seen.
 
-After the doctor is logged in, a page should be displayed that lets patients check
-in. A patient with an appointment should first confirm their identity (first/last
-name maybe SSN) then be able to update their demographic information using the
-patient chart API endpoint.  Once the they have filled out that information the
-app can set the appointment status to "Arrived" (Appointment API Docs).
+Outside of these base requirements, we hope you are able to develop any features you think make sense. Put yourself in the shoes of the doctor. 
+What tools would be useful if you were planning your day? We love to see creativity and initiative!
 
-The doctor should also have their own page they can leave open that displays
-today’s appointments, indicating which patients have checked in and how long they
-have been waiting. From this screen, the doctor can indicate they are seeing a
-patient, which stops the “time spent waiting” clock. The doctor should also see
-the overall average wait time for all patients they have ever seen.
 
 Outside of these base requirements, you are free to develop any features you think
 make sense.
