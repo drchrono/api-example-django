@@ -58,7 +58,7 @@ This project has `social-auth` preconfigured for you. The `social_auth_drchrono/
 1) Log in to [drchrono.com](https://www.drchrono.com)
 2) Go to the [API management page](https://app.drchrono.com/api-management/)
 3) Make a new application
-4) Copy the `SOCIAL_AUTH_CLIENT_ID` and `SOCIAL_AUTH_CLIENT_SECRET` to your `docker/environment` file.
+4) Copy the `SOCIAL_AUTH_CLIENT_ID` and `SOCIAL_AUTH_SECRET` to your `docker/environment` file.
 5) Set your redirect URI to `http://localhost:8080/complete/drchrono/`
 
 
@@ -73,7 +73,7 @@ $ docker-compose up
 ```
 
 If you don't want to use docker, that's fine too! The project is fairly small and self-contained. You can probably get all
-the dependencies installed and running on your favorite platform with `pip install -r requirements.txt && python manage.py runserver`. You'll have to configure the `CLIENT_ID` and `CLIENT_SECRET` variables by hand, though.
+the dependencies installed and running on your favorite platform with `pip install -r requirements.txt && python manage.py runserver`. You'll have to configure the `SOCIAL_AUTH_CLIENT_ID` and `SOCIAL_AUTH_SECRET` variables by hand, though.
 
 Once the dev server is running, connect with a browser to [http://localhost:8080/setup]() and use the web to authorize 
 the application.
