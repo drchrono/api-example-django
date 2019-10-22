@@ -6,7 +6,7 @@ Imagine you’re a busy doctor running a lean medical practice. Your receptionis
 or bother you with constant updates as patients check in, schedule new appointments, or cancel. 
 You want to replace old office workflows with an interactive dashboard.
 
-After you log into to the system, the doctor should see an interactive page page they can leave open that displays today’s appointments, 
+After you log into to the system, the doctor should see an interactive page they can leave open that displays today’s appointments, 
 indicating which patients are scheduled, which patients have checked in, and how long they have been waiting. From this screen, the doctor 
 can indicate they are seeing a patient, which stops the “time spent waiting” clock. It should be able to update when an appointment status 
 changes or a new appointment is scheduled by the receptionist or patient. It should also display some summary statistics, 
