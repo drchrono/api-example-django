@@ -103,6 +103,8 @@ class BaseEndpoint(object):
                 url = data['next']  # Same as the resource URL, but with the page query parameter present
                 for result in data['results']:
                     yield result
+                if url:
+                    response = requests.get(url, params=params, **kwargs)
         else:
             exe = ERROR_CODES.get(response.status_code, APIException)
             self.logger.debug("list exception {}".format(exe))
