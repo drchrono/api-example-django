@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: api-example-django
+  description: drchrono API example using django
+  annotations:
+    business-unit: EverHealth
+    github.com/project-slug: drchrono/api-example-django
+    product: DRC
+spec:
+  type: service
+  lifecycle: production
+  owner: EverHealth
+  implementation:
+    languages:
+    - Python
+    - HTML
+    - Shell
